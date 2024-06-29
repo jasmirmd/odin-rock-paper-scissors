@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Odin Rock Paper Scissors</title>
+  <link rel="stylesheet" href="src/base.css">
+  <script src="src/main.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <div class="game">
+      <div class="scene">
+        <div class="player">
+          <img class="left sprite" src="public/rock.png">
+        </div>
+        <div class="bot">
+          <img class="right sprite" src="public/rock.png">
+        </div>
+      </div>
+      <div class="hud">
+        <div class="overlay"></div>
+        <div class="text">
+          <p class="score">
+            <span class="human-score">0</span>
+             - 
+            <span class="bot-score">0</span>
+          </p>
+          <p class="subtext">Do you wanna play?</p>
+        </div>
+        <div class="buttons">
+          <button class="rock btn">ROCK</button>
+          <button class="paper btn">PAPER</button>
+          <button class="scissors btn">SCISS</button>
+          <button class="restart btn">RESTART</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
