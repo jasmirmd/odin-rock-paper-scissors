@@ -5,7 +5,7 @@ Yeah, the third project, a simple rock paper scissors game, basic javascript pra
 
 ![demo](public/demo.png)
 
-[View Live Demo](https://jasmirmd.github.io/odin-rock-paper-scissors/)
+[View Live Demo](https://jasmirmd.github.io/rock-paper-scissors/)
 
 ### Resources:
 - [Catppuccin Palette](https://catppuccin.com/palette)
