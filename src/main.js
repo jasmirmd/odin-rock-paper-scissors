@@ -1,10 +1,6 @@
 const scene = document.querySelector('.scene');
 const player = document.querySelector('.player');
 const bot = document.querySelector('.bot');
-const rockBtn = document.querySelector('.rock');
-const paperBtn = document.querySelector('.paper');
-const scissorsBtn = document.querySelector('.scissors');
-const restartBtn = document.querySelector('.restart');
 const left = document.querySelector('.left');
 const right = document.querySelector('.right');
 const botScore = document.querySelector('.bot-score');
@@ -12,35 +8,44 @@ const humanScore = document.querySelector('.human-score');
 const subtext = document.querySelector('.subtext');
 const overlay = document.querySelector('.overlay');
 
-let _botScore = 0;
-let _humanScore = 0;
+const buttons = document.querySelector('.buttons').querySelectorAll('button');
+const [rockBtn, paperBtn, scissorsBtn, restartBtn] = buttons;
 
-rockBtn.addEventListener('click', () => {
-  play('rock');
+let [_botScore, _humanScore] = [0, 0];
+
+buttons.forEach((button) => {
+  button.addEventListener('click', () => {
+    button.id === 'restart' ? restart() : play(button.id);
+  });
 });
 
-paperBtn.addEventListener('click', () => {
-  play('paper');
-});
+function newElem(tag, className = null, src = null) {
+  const elem = document.createElement(tag);
 
-scissorsBtn.addEventListener('click', () => {
-  play('scissors');
-});
+  if(className) elem.setAttribute('class', className);
+  if(src) elem.src = src;
 
-restartBtn.addEventListener('click', () => {
-  restart();
-});
+  return elem;
+}
+
+function cleanScene() {
+  while(player.firstChild && bot.firstChild) {
+    player.removeChild(player.firstChild);
+    bot.removeChild(bot.firstChild);
+  }
+}
 
 function play(option) {
   const botDecision = botPlay();
   const humanDecision = option;
-  const humanDecisionImg = `<img class="left sprite" src="public/${humanDecision}.png">`;
-  const botDecisionImg = `<img class="right sprite" src="public/${botDecision}.png">`;
 
-  player.innerHTML = '';
-  player.innerHTML = humanDecisionImg;
-  bot.innerHTML = '';
-  bot.innerHTML = botDecisionImg;
+  const humanDecisionImg = newElem('img', 'left sprite', `public/${humanDecision}.png`);
+  const botDecisionImg = newElem('img', 'right sprite', `public/${botDecision}.png`);
+
+  cleanScene();
+
+  player.appendChild(humanDecisionImg);
+  bot.appendChild(botDecisionImg);
 
   subtext.textContent = `${humanDecision} vs ${botDecision}`;
 
@@ -50,30 +55,23 @@ function play(option) {
     'paper': 'rock'
   }
 
+  hideOverlay('block');
+
   if(winDie[humanDecision] === botDecision) {
-    hideOverlay('block');
     _humanScore++;
-    setTimeout(() => {
-      updateScore();
-      win('human');
-      hideOverlay('none');
-    }, 700);
+    win('human');
   } else if(humanDecision === botDecision) {
-    hideOverlay('block');
-    setTimeout(() => {
-      subtext.textContent = 'TIE';
-      hideOverlay('none');
-    }, 700);
+    win(false);
   } else {
-    hideOverlay('block');
     _botScore++;
-    setTimeout(() => {
-      updateScore();
-      win('bot');
-      hideOverlay('none');
-    }, 700);
+    win('bot');
   }
 
+  setTimeout(() => {    
+    hideOverlay('none')
+    updateScore();
+  }, 700);
+  
   winner();
 }
 
@@ -88,57 +86,52 @@ function updateScore() {
 
 function botPlay() {
   const decisions = ['rock', 'paper', 'scissors'];
-
-  return decisions[Math.floor(Math.random() * 3)];
+  return decisions[Math.floor(Math.random() * decisions.length)];
 }
 
 function win(op) {
-  subtext.textContent = `${op} +1`;
-}
-
-function winner() {
-  if(_humanScore === 3) {
-    setTimeout(() => {
-      subtext.textContent = 'Human winner';
-      hideOverlay('block');
-      setTimeout(() => {
-        hideButtons();
-        hideOverlay('none');
-      }, 700);
-    }, 700);
-  } else if(_botScore === 3) {
-    setTimeout(() => {
-      subtext.textContent = 'Bot winner';
-      hideOverlay('block');
-      setTimeout(() => {
-        hideButtons();
-        hideOverlay('none');
-      }, 700);
-    }, 700);
+  if(op) {
+    setTimeout(() => { subtext.textContent = `${op} +1`;  }, 700);
+  } else {
+    setTimeout(() => { subtext.textContent = 'TIE' }, 700);
   }
 }
 
-function hideButtons() {
-  rockBtn.style.display = 'none';
-  paperBtn.style.display = 'none';
-  scissorsBtn.style.display = 'none';
-  restartBtn.style.display = 'block';
+function winner() {
+  setTimeout(() => {
+    if(_humanScore === 5) {
+      subtext.textContent = 'Human winner';
+      hideOverlay('none')
+      hideButtons('none', 'block');
+    } else if(_botScore === 5) {
+      subtext.textContent = 'Bot winner';
+      hideOverlay('none');
+      hideButtons('none', 'block');
+    }
+  }, 700);
+}
+
+function hideButtons(op, op2) {
+  buttons.forEach((button) => {
+    button.style.display = op;
+    if(button.id === 'restart') button.style.display = op2;
+  });
 }
 
 function restart() {
-  rockBtn.style.display = 'block';
-  paperBtn.style.display = 'block';
-  scissorsBtn.style.display = 'block';
-  restartBtn.style.display = 'none';
+  const default0 = newElem('img', 'left sprite', 'public/rock.png');
+  const default1 = newElem('img', 'right sprite', 'public/rock.png');
 
-  _botScore = 0;
-  _humanScore = 0;
+  hideButtons('block', 'none');
+
+  [_humanScore, _botScore] = [0, 0];
+
   updateScore();
 
   subtext.textContent = 'Again?';
 
-  player.innerHTML = '';
-  bot.innerHTML = '';
-  player.innerHTML = `<img class="left sprite" src="public/rock.png"></img>`;
-  bot.innerHTML = `<img class="right sprite" src="public/rock.png"></img>`;
+  cleanScene()
+
+  player.appendChild(default0);
+  bot.append(default1);
 }
