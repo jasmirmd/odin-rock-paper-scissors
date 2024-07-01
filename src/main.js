@@ -59,12 +59,12 @@ function play(option) {
 
   if(winDie[humanDecision] === botDecision) {
     _humanScore++;
-    win('human');
+    win('😀');
   } else if(humanDecision === botDecision) {
     win(false);
   } else {
     _botScore++;
-    win('bot');
+    win('🤖');
   }
 
   setTimeout(() => {    
@@ -100,11 +100,11 @@ function win(op) {
 function winner() {
   setTimeout(() => {
     if(_humanScore === 5) {
-      subtext.textContent = 'Human winner';
+      subtext.textContent = 'human winner 😆';
       hideOverlay('none')
       hideButtons('none', 'block');
     } else if(_botScore === 5) {
-      subtext.textContent = 'Bot winner';
+      subtext.textContent = 'bot winner 🤖';
       hideOverlay('none');
       hideButtons('none', 'block');
     }
@@ -128,7 +128,7 @@ function restart() {
 
   updateScore();
 
-  subtext.textContent = 'Again?';
+  subtext.textContent = 'Again? 😼';
 
   cleanScene()
 
