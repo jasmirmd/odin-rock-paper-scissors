@@ -19,11 +19,10 @@ buttons.forEach((button) => {
   });
 });
 
-function newElem(tag, className = null, src = null) {
+function newElem(tag, className, src) {
   const elem = document.createElement(tag);
-
-  if(className) elem.setAttribute('class', className);
-  if(src) elem.src = src;
+  elem.setAttribute('class', className);
+  elem.src = src;
 
   return elem;
 }
