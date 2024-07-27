@@ -31,6 +31,7 @@
   background-color: var(--mantle);
   border-radius: 0.5rem;
   margin-top: 2rem;
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4);
 }
 
 .hud {
