@@ -29,7 +29,6 @@
   width: 500px;
   height: 400px;
   background-color: var(--mantle);
-  border: 2px solid var(--overlay2);
   border-radius: 0.5rem;
   margin-top: 2rem;
 }
